@@ -1,5 +1,5 @@
-int ft_isascii(int argument){
-    if (argument >= 0 && argument <= 127){
+int ft_isascii(int c){
+    if (c >= 0 && c <= 127){
         return 1;
     }
     return 0;
