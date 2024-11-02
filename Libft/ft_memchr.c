@@ -1,48 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sholz <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/23 15:25:56 by sholz             #+#    #+#             */
-/*   Updated: 2024/10/23 15:26:41 by sholz            ###   ########.fr       */
+/*   Created: 2024/10/28 12:05:56 by sholz             #+#    #+#             */
+/*   Updated: 2024/10/28 12:05:57 by sholz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
 	size_t	i;
 	char	*str;
+	char	ch;
 
 	i = 0;
 	str = (char *)s;
-	while (n--)
+	ch = (char)c;
+	while (i <= n)
 	{
-		str[i++] = 0;
+		if (str[i] == ch)
+		{
+			return ((void *)&str[i]);
+		}
+		i++;
 	}
+	return (NULL);
 }
+
 /*
-
-
 #include <stdio.h>
-#include <strings.h>  // for bzero
+#include <string.h>
+
 
 int main() {
-    // Define a character array (buffer) with some initial data
-    char buffer[10] = "hello";
-
-    // Print the buffer before bzero
-    printf("Buffer before bzero: '%s'\n", buffer);
-
-    // Use bzero to zero out the memory of the buffer
-    bzero(buffer, sizeof(buffer));
-
-    // Print the buffer after bzero
-    printf("Buffer after bzero: '%s'\n", buffer);
+    const char *str = "Hello, world!";
+    char ch = 'o';
+    size_t n = strlen(str);
+    
+    char *result = (char *)ft_memchr(str, ch, n);
+    
+    if (result) {
+        printf("Found '%c' at position: %ld\n", ch, result - str);
+    } else {
+        printf("Character '%c' not found.\n", ch);
+    }
 
     return 0;
 }
+
 */

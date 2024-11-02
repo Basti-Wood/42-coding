@@ -1,11 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sholz <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/23 15:25:56 by sholz             #+#    #+#             */
+/*   Updated: 2024/10/23 15:26:41 by sholz            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-size_t  ft_strlen(const char *str){
-    int i = 0;
-    while (str[i] != '\0') {
-        i++;
-    }
-    return i;
+size_t	ft_strlen(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
 }
 /*
 
@@ -20,8 +36,8 @@ int main() {
     char str2[] = "";  // Empty string
 
     // Using strlen to calculate the length of the strings
-    size_t len1 = ft_strlen(str1);  // Should return 13 (excluding the null character)
-    size_t len2 = ft_strlen(str2);  // Should return 0 (empty string)
+    size_t len1 = ft_strlen(str1);  // Should return 13 
+    size_t len2 = ft_strlen(str2);  // Should return 0
 
     // Displaying the lengths
     printf("Length of '%s' is: %zu\n", str1, len1);

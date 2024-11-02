@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sholz <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/23 15:25:56 by sholz             #+#    #+#             */
-/*   Updated: 2024/10/23 15:26:41 by sholz            ###   ########.fr       */
+/*   Created: 2024/10/28 12:51:27 by sholz             #+#    #+#             */
+/*   Updated: 2024/10/28 12:51:28 by sholz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-int	ft_isdigit(char c)
+int	ft_atoi(const char *str)
 {
-	if (c >= '0' && c <= '9')
-	{
-		return (1);
-	}
-	return (0);
+	int		i;
+	int		sign;
+	int		nbr;
+
+	i = 0;
+	sign = 1;
+	nbr = 0;
+	if (!str[i])
+		return (0);
+	while (ft_isspace(str[i]))
+		i += 1;
+	if (str[i] == '-' || str[i] == '+')
+		if (str[i++] == '-')
+			sign = -1;
+	while (str[i] >= '0' && str[i] <= '9')
+		nbr = (nbr * 10) + (str[i++] - '0');
+	return (nbr * sign);
 }
-
-/*
-
-
-#include <stdio.h>
-#include <ctype.h>
-
-int main() {
-    char c;
-    c = 'q';
-    printf("\nis digit: %d", ft_isdigit(c));
-
-    return 0;
-}
-*/

@@ -1,39 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sholz <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/23 15:25:56 by sholz             #+#    #+#             */
-/*   Updated: 2024/10/23 15:26:41 by sholz            ###   ########.fr       */
+/*   Created: 2024/10/28 10:55:09 by sholz             #+#    #+#             */
+/*   Updated: 2024/10/28 10:55:12 by sholz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
 
-void	*ft_memset(void *b, int c, size_t len)
+int	ft_toupper(int ch)
 {
-	unsigned char	*p;
-
-	p = (unsigned char *)b;
-	while (len > 0)
+	if (ch >= 'a' && ch <= 'z')
 	{
-		*p = (unsigned char)c;
-		p++;
-		len--;
+		ch -= 32;
 	}
-	return (b);
+	return (ch);
 }
 /*
+
 #include <stdio.h>
-#include <string.h>
 int main() {
-    char buffer[10];
-    ft_memset(buffer, 'A', sizeof(buffer) - 1);  // Leave space null terminator
-    buffer[9] = '\0';  // Null-terminate the string
-    
-    printf("%s\n", buffer);  // Output: AAAAAAAAA
+    char lowercase = 'b';
+    char uppercase = ft_toupper(lowercase);
+    printf("Original: %c, Uppercase: %c\n", lowercase, uppercase);
+
     return 0;
 }
 */

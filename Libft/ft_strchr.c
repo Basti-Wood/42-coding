@@ -1,36 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sholz <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/23 15:25:56 by sholz             #+#    #+#             */
-/*   Updated: 2024/10/23 15:26:41 by sholz            ###   ########.fr       */
+/*   Created: 2024/10/28 11:02:29 by sholz             #+#    #+#             */
+/*   Updated: 2024/10/28 11:02:32 by sholz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-int	ft_isdigit(char c)
+char	*ft_strchr(const char *s, int c)
 {
-	if (c >= '0' && c <= '9')
+	int	i;
+
+	i = 0;
+	while (s[i] != c)
 	{
-		return (1);
+		if (s[i] == '\0')
+		{
+			return (NULL);
+		}
+		i++;
 	}
-	return (0);
+	return ((char *)&s[i]);
 }
-
-/*
-
-
-#include <stdio.h>
-#include <ctype.h>
-
-int main() {
-    char c;
-    c = 'q';
-    printf("\nis digit: %d", ft_isdigit(c));
-
-    return 0;
-}
-*/

@@ -1,11 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sholz <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/23 15:25:56 by sholz             #+#    #+#             */
+/*   Updated: 2024/10/23 15:26:41 by sholz            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-//int isalpha(int argument);
+#include "libft.h"
 
-int ft_isalpha(int c){
-    if ((c >= 'A' || c <= 'Z') && (c >= 'a' || c <= 'z')) {
-        return 1;
-    }
-    return 0;
+int	ft_isalpha(int c)
+{
+	if ((c >= 'A' || c <= 'Z') && (c >= 'a' || c <= 'z'))
+	{
+		return (1);
+	}
+	return (0);
 }
 
 /*
@@ -31,7 +44,7 @@ int main()
     printf("\nResult when lowercase alphabet is passed: %d", ft_isalpha(ft));
 
     ft = 1;
-    printf("\nResult when non-alphabetic character is passed: %d", ft_isalpha(ft));
+    printf("\nResult non-alphabetic character: %d", ft_isalpha(ft));
 
     return 0;
 }*/

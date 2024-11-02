@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sholz <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/23 15:25:56 by sholz             #+#    #+#             */
-/*   Updated: 2024/10/23 15:26:41 by sholz            ###   ########.fr       */
+/*   Created: 2024/10/30 17:43:20 by sholz             #+#    #+#             */
+/*   Updated: 2024/10/30 17:43:21 by sholz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-int	ft_isdigit(char c)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	if (c >= '0' && c <= '9')
+	char			*strsub;
+	unsigned int	i;
+
+	res = (char *)malloc(sizeof(char) * len + 1);
+	i = 0;
+	if (!s || !res)
 	{
-		return (1);
+		return (NULL);
 	}
-	return (0);
+	while (s[start + i] && i <= len)
+	{
+		res[i] = s[i + start];
+		i += 1;
+	}
+	res[i] = '\0';
+	return (res);
 }
-
-/*
-
-
-#include <stdio.h>
-#include <ctype.h>
-
-int main() {
-    char c;
-    c = 'q';
-    printf("\nis digit: %d", ft_isdigit(c));
-
-    return 0;
-}
-*/

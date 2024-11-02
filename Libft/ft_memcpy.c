@@ -1,25 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sholz <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/23 15:25:56 by sholz             #+#    #+#             */
+/*   Updated: 2024/10/23 15:26:41 by sholz            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-void    *ft_memcpy(void *dst, const void *src, size_t n){
-    size_t i;
-    char *ndst;
-    char *nsrc;
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	size_t	i;
+	char	*ndst;
+	char	*nsrc;
 
-    i = 0;
-    ndst = (char *)dst;
-    nsrc = (char *)src;
-    while (i <= n){
-        ndst[i] = nsrc[i];
-        i++;
-    }
+	i = 0;
+	ndst = (char *)dst;
+	nsrc = (char *)src;
+	while (i <= n)
+	{
+		ndst[i] = nsrc[i];
+		i++;
+	}
+	return (ndst);
 }
-
-
-
-
-
-
-
+/*
 
 #include <stdio.h>
 #include <string.h>
@@ -40,3 +49,4 @@ int main() {
 
     return 0;
 }
+*/
