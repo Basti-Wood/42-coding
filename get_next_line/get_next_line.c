@@ -1,8 +1,8 @@
 #include "get_next_line.h"
 /*DU MUSST DAS HIER NOCH ÄNDERN!!!!!
 NICHT KOPIEREN!!!!!!!!!!*/
-/*
-static char	*keep_rest(char *temp, int start)
+
+static char	*temp_keep_rest(char *temp, int start)
 {
 	char	*rest;
 	int		len;
@@ -18,7 +18,7 @@ static char	*keep_rest(char *temp, int start)
 	return (rest);
 }
 
-static char	*extract_line(char *temp, int *start_next)
+static char	*temp_extract_line(char *temp, int *start_next)
 {
 	char	*line;
 	int		i;
@@ -38,7 +38,7 @@ static char	*extract_line(char *temp, int *start_next)
 	return (line);
 }
 
-static char	*new_line(int fd, char *buffer, char *temp)
+static char	*temp_new_line(int fd, char *buffer, char *temp)
 {
 	int		read_bytes;
 	char	*new_temp;
@@ -61,7 +61,7 @@ static char	*new_line(int fd, char *buffer, char *temp)
 	return (temp);
 }
 
-char	*get_next_line(int fd)
+char	*temp_get_next_line(int fd)
 {
 	char		*buffer;
 	char		*line;
@@ -75,88 +75,18 @@ char	*get_next_line(int fd)
 	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
-	temp = new_line(fd, buffer, temp);
+	temp = temp_new_line(fd, buffer, temp);
 	free(buffer);
 	if (!temp)
 		return (NULL);
-	line = extract_line(temp, &start_next);
+	line = temp_extract_line(temp, &start_next);
 	if (!line && !temp)
 		return (NULL);
-	temp = keep_rest(temp, start_next);
+	temp = temp_keep_rest(temp, start_next);
 	return (line);
 }
 
-*////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 //eigene imlementierung
 
-#include <unistd.h>
-#include <stdlib.h>
-
-static char	*extract_line(char **buffer)
-{
-	char	*line;
-	char	*temp;
-	int		index;
-
-	index = 0;
-	while ((*buffer)[index] && (*buffer)[index] != '\n')
-		index++;
-	if ((*buffer)[index] == '\n')
-	{
-		line = ft_substr(*buffer, 0, index + 1);
-		temp = ft_strdup(&(*buffer)[index + 1]);
-		free(*buffer);
-		*buffer = temp;
-	}
-	else
-	{
-		line = ft_strdup(*buffer);
-		free(*buffer);
-		*buffer = NULL;
-	}
-	return (line);
-}
-
-static char	*read_to_buffer(int fd, char *buffer)
-{
-	char	*temp;
-	char	*read_buffer;
-	ssize_t	bytes_read;
-
-	read_buffer = malloc(BUFFER_SIZE + 1);
-	if (!read_buffer)
-		return (NULL);
-	while (!ft_strchr(buffer, '\n') && (bytes_read = read(fd, read_buffer, BUFFER_SIZE)) > 0)
-	{
-		read_buffer[bytes_read] = '\0';
-		temp = ft_strjoin(buffer, read_buffer);
-		free(buffer);
-		buffer = temp;
-	}
-	free(read_buffer);
-	if (bytes_read < 0)
-	{
-		free(buffer);
-		return (NULL);
-	}
-	return (buffer);
-}
-
-char	*get_next_line(int fd)
-{
-	static char	*buffer;
-
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	buffer = read_to_buffer(fd, buffer);
-	if (!buffer)
-		return (NULL);
-	if (*buffer == '\0')
-	{
-		free(buffer);
-		buffer = NULL;
-		return (NULL);
-	}
-	return (extract_line(&buffer));
-}

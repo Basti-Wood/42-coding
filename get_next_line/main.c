@@ -1,36 +1,32 @@
-#include <stdio.h>      // For printf()
-#include <fcntl.h>      // For open()
-#include <unistd.h>     // For close()
-#include "get_next_line.h" // Include the header for get_next_line
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include "get_next_line.h"
 
-int main(int argc, char **argv)
-{
+int main() {
     int fd;
     char *line;
 
-    // Check if the user provided a file as an argument
-    if (argc != 2)
-    {
-        printf("Usage: %s <file>\n", argv[0]);
-        return (1);
-    }
+    printf("DEBUG: Starting to open file...\n");
 
-    // Open the file
-    fd = open(argv[1], O_RDONLY);
-    if (fd < 0)
-    {
+    fd = open("file.txt", O_RDONLY);
+    if (fd < 0) {
         perror("Error opening file");
-        return (1);
+        return 1;
     }
+    printf("DEBUG: File opened successfully...\n");
 
-    // Read and print lines until EOF
-    while ((line = get_next_line(fd)) != NULL)
-    {
-        printf("%s", line); // Print the line
-        free(line);         // Free the memory allocated by get_next_line
-    }
+    line = temp_get_next_line(fd);
+    printf("DEBUG: Line read: %s\n", line);
+    printf("%s", line);
+	line = temp_get_next_line(fd);
+	printf("\n%s", line);
+	free(line);
+    
 
-    // Close the file descriptor
+    printf("DEBUG: End of file or error.\n");
     close(fd);
-    return (0);
+    printf("finished the program\n");
+
+    return 0;
 }
