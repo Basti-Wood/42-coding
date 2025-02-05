@@ -1,40 +1,51 @@
-#include "libft/libft.h"
 #include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
 
-void	send_bit(int pid, char *str, size_t len)
+void	signal_action(int pid, char *str)
 {
-	int		shift;
-	size_t	i;
+	int	i;
+	int	c;
 
-	i = 0;
-	while (i <= len)
+	while (*str)
 	{
-		shift = 0;
-		while (shift < 7)
+		c = *str;
+		i = 0;
+		while (i < 8)
 		{
-			if ((str[i] >> shift) & 1)
-				kill(pid, SIGUSR2);
-			else
+			if ((c >> (7 - i)) & 1)
 				kill(pid, SIGUSR1);
-			shift++;
-			usleep(300);
+			else
+				kill(pid, SIGUSR2);
+			i++;
+			usleep(100);
 		}
+		str++;
+	}
+	// Send NULL terminator
+	c = 0;
+	i = 0;
+	while (i < 8)
+	{
+		kill(pid, SIGUSR2); // Send 8 zero bits to indicate the end
 		i++;
+		usleep(100);
 	}
 }
 
-
 int	main(int argc, char **argv)
 {
-	int		pid;
-	char	*str;
-
-	if (argc == 3)
+	if (argc != 3)
 	{
-		pid = ft_atoi(argv[1]);
-		str = argv[2];
-		send_bit(pid, str, ft_strlen(str));
+		printf("Invalid number of arguments.\n");
+		printf("Format: [./client <SERVER ID (PID)> <STRING>]\n");
+		exit(EXIT_FAILURE);
 	}
 	else
-		ft_printf("\nyou dont leave it blank. OR HAVE MORE THAN ONE WORD YOU DOUGHNUT!\n\n");
+	{
+		signal_action(atoi(argv[1]), argv[2]);
+	}
+	return (0);
 }

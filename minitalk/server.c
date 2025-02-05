@@ -1,31 +1,43 @@
-#include "libft/libft.h"
+
 #include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-static void message_manager(int bit)
+void handler(int sig)
 {
-		int	i;
+    static int i = 0;
+    static unsigned char c = 0;
 
-	i = 0;
-	g_msg.c += ((bit & 1) << g_msg.i);
-	g_msg.i++;
-	if (g_msg.i == 7)
-	{
-		ft_printf("%c", g_msg.c);
-		if (!g_msg.c)
-			ft_printf("\n");
-		g_msg.c = 0;
-		g_msg.i = 0;
-	}
+    if (sig == SIGUSR2)
+        c = c << 1;
+    else if (sig == SIGUSR1)
+        c = (c << 1) | 0b00000001;
+    i++;
+
+    if (i == 8)
+    {
+        printf("%c", c);
+        fflush(stdout); 
+        i = 0;
+        c = 0;
+    }
 }
 
 int main(void)
 {
-	ft_printf("Welcome to THE Server! \n Here is my PHD. or PID? WHO KNOWS‽ \n %i", getpid())
-		while (1)
-	{
-		signal(SIGUSR2, message_manager);
-		signal(SIGUSR1, message_manager);
-		pause();
-	}
-	return (0);
+    struct sigaction sa;
+    sa.sa_handler = handler;
+    sa.sa_flags = SA_RESTART;
+    sigemptyset(&sa.sa_mask);
+
+    printf("PID: %d\n", getpid());
+
+    sigaction(SIGUSR1, &sa, NULL);
+    sigaction(SIGUSR2, &sa, NULL);
+
+    while (1)
+        pause(); 
+
+    return 0;
 }
