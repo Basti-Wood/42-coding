@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void handler(int sig)
+void reciever(int sig)
 {
     static int i = 0;
     static unsigned char c = 0;
@@ -17,7 +17,7 @@ void handler(int sig)
 
     if (i == 8)
     {
-        printf("%c", c);
+        ft_printf("%c", c);
         fflush(stdout); 
         i = 0;
         c = 0;
@@ -27,7 +27,7 @@ void handler(int sig)
 int main(void)
 {
     struct sigaction sa;
-    sa.sa_handler = handler;
+    sa.sa_handler = reciever;
     sa.sa_flags = SA_RESTART;
     sigemptyset(&sa.sa_mask);
 

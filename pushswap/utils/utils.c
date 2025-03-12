@@ -1,8 +1,8 @@
-# include "push_swap.h"
+#include "../push_swap.h"
 
 void	ft_error(char *msg)
 {
-	ft_putendl_fd(msg, 1);
+	ft_printf("Error /n %s", msg)
 	exit(0);
 }
 
