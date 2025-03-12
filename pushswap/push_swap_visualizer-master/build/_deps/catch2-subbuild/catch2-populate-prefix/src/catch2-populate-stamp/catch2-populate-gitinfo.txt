@@ -1,0 +1,15 @@
+# This is a generated file and its contents are an internal implementation detail.
+# The download step will be re-executed if anything in this file changes.
+# No other meaning or use of this file is supported.
+
+method=git
+command=/usr/bin/cmake;-P;/home/sholz/test/42IC_Ring02_Push_swap/push_swap/push_swap_visualizer-master/build/_deps/catch2-subbuild/catch2-populate-prefix/tmp/catch2-populate-gitclone.cmake
+source_dir=/home/sholz/test/42IC_Ring02_Push_swap/push_swap/push_swap_visualizer-master/build/_deps/catch2-src
+work_dir=/home/sholz/test/42IC_Ring02_Push_swap/push_swap/push_swap_visualizer-master/build/_deps
+repository=https://github.com/catchorg/Catch2.git
+remote=origin
+init_submodules=TRUE
+recurse_submodules=--recursive
+submodules=
+CMP0097=NEW
+
