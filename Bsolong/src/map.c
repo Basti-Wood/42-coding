@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   map.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/05 13:40:39 by asimon            #+#    #+#             */
-/*   Updated: 2022/01/08 23:45:43 by asimon           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../includes/so_long.h"
 
@@ -36,7 +26,7 @@ char	*get_map(int fd)
 		}
 		return (buff);
 	}
-	ft_error("Error\nWrong lecture map\n");
+	ft_error("Wrong map", 1);
 	return (NULL);
 }
 
@@ -87,21 +77,26 @@ char	**map_core(char **str, t_data *data)
 	fd = 0;
 	data->map = NULL;
 	if (ft_strchr(str[1], ".ber") == 0)
-		return (ft_error("Error\nNo correct format map founded\n"));
+		ft_error("No correct format map founded", 1);
 	else
 	{
 		fd = open(str[1], O_RDONLY);
 		if (fd > 0)
 			data->map = parse_map(fd, data);
 		else
-			return (ft_error("Error\nFailed to open file\n"));
+			ft_error("Failed to open file", 1);
 		if ((data->content.count_c == 0 || data->content.count_e != 1
 				|| data->content.count_p != 1) && data->map != NULL)
 		{
 			ft_free_map(data);
-			return (ft_error(
-					"Error\nNeed 1 Player/Exit and at least 1 Object\n"));
+			ft_error("Need 1 Player/Exit and at least 1 Object", 1);
 		}
+    if (!is_doable(data)) {
+        ft_free_map(data);
+        ft_error("Map is not solvable", 1);
+    }
 	}
-	return (data->map);
+      
+
+    return (data->map);
 }

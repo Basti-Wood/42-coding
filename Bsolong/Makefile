@@ -1,43 +1,29 @@
-NAME		=	so_long
+NAME        =   so_long
 
-CC			=	clang
+CC          =   clang
 
-FLAG		=	-Wall -Wextra -Werror
+FLAG        =   -Wall -Wextra -Werror
 
-LIBFT_PATH	=	./libft/
+LIBFT_PATH  =   ./libft/
+LIBFT_FILE  =   libft.a
 
-LIBFT_FILE	=	libft.a
+MLX_FILE    =   libmlx.a
+MLX_FLAG    =   -lX11 -lXext
+MLX_PATH    =   ./minilibx-linux/
 
-MLX_FILE	=	libmlx.a
+LIBFT_LIB   =   $(addprefix $(LIBFT_PATH), $(LIBFT_FILE))
+MLX_LIB     =   $(addprefix $(MLX_PATH), $(MLX_FILE))
+MLX_EX      =   $(MLX_LIB) $(MLX_FLAG)
 
-LIBFT_LIB	=	$(addprefix $(LIBFT_PATH), $(LIBFT_FILE))
+SRC_DIR     =   ./src/
+INC_DIR     =   ./includes/
 
-MLX_FLAG	=	-lX11 -lXext
-
-MLX_PATH	=	./minilibx-linux/
-
-MLX_LIB		=	$(addprefix $(MLX_PATH), $(MLX_FILE))
-
-MLX_EX		=	$(MLX_LIB) $(MLX_FLAG)
-
-C_FILE		=	map.c				\
-				map_checker.c		\
-				render.c			\
-				render_mouv.c		\
-				set.c				\
-				texture.c			\
-				utils.c				\
-
-SRC_DIR		=	./core/
-
-INC_DIR		=	./includes/
-
-SRC			=	$(addprefix $(SRC_DIR),$(C_FILE))
-
-OBJ			=	$(SRC:.c=.o)
+# Automatically find all .c files in src directory
+SRC         =   $(wildcard $(SRC_DIR)*.c)
+OBJ         =   $(SRC:.c=.o)
 
 .c.o:
-	$(CC) $(FLAG) -c $< -o $@
+	$(CC) $(FLAG) -I$(INC_DIR) -c $< -o $@
 
 all: $(NAME)
 

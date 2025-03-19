@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   so_long.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: asimon <marvin@42.fr>                      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/04 19:21:35 by asimon            #+#    #+#             */
-/*   Updated: 2022/01/08 23:28:17 by asimon           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
@@ -22,6 +12,11 @@
 # include <X11/keysym.h>
 # include <X11/X.h>
 # include <fcntl.h>
+
+typedef struct s_point {
+    int x;
+    int y;
+}                                 t_point;
 
 typedef struct img_s
 {
@@ -39,7 +34,7 @@ typedef struct img_s
 	char	*exit;
 }				t_img;
 
-typedef struct cnt_s
+typedef struct cunt_s
 {
 	char	exit;
 	char	collect;
@@ -49,7 +44,7 @@ typedef struct cnt_s
 	int		count_p;
 	int		count_e;
 	int		count_c;
-}				t_cnt;
+}				t_cunt;
 
 typedef struct pos_s
 {
@@ -64,30 +59,31 @@ typedef struct data_s
 	int		width;
 	int		height;
 	char	**map;
-	t_cnt	content;
+	t_cunt	content;
 	t_img	img;
 	t_pos	pos;
 	int		count;
 }				t_data;
 
 int		ft_strchr(char *str, char *cmp);
-void	*ft_error(char *str);
+void	ft_error(char *str, int i);
 int		ft_same_char(char *str);
 
 int		ft_same_char(char *str);
 char	*get_map(int fd);
 char	**map_core(char **str, t_data *data);
 int		chk_map(char **argv);
+int		is_doable(t_data *data);
 
 int		ft_check_col(char *map_line, char col, t_data *data);
 int		ft_check_line(char *map_line, char wall);
-int		ft_check_other(char *map_line, t_cnt *content);
+int		ft_check_other(char *map_line, t_cunt *content);
 void	ft_check_content(t_data *data);
 int		ft_check_format(char **map);
 int		chk_collect(t_data *data);
 
 void	set_img(t_data *data);
-void	set_content(t_cnt *content);
+void	set_content(t_cunt *content);
 
 void	core_render(t_data *data);
 int		render(t_data *data);

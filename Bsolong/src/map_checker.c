@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   map_checker.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/05 12:45:16 by asimon            #+#    #+#             */
-/*   Updated: 2022/01/08 23:29:05 by asimon           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../includes/so_long.h"
 
@@ -21,7 +11,7 @@ int	ft_check_col(char *map_line, char wall, t_data *data)
 		i++;
 	if (map_line[0] != wall || map_line[i - 1] != wall)
 	{
-		ft_error("Error\nMap column not close\n");
+		ft_error("Map column not close", 1);
 		return (0);
 	}
 	data->width = i;
@@ -37,7 +27,7 @@ int	ft_check_line(char *map_line, char wall)
 	{
 		if (map_line[i] != wall)
 		{
-			ft_error("Error\nMap line not close\n");
+			ft_error("Map line not close", 1);
 			return (0);
 		}
 		i++;
@@ -45,7 +35,7 @@ int	ft_check_line(char *map_line, char wall)
 	return (1);
 }
 
-int	ft_check_other(char *map_line, t_cnt *content)
+int	ft_check_other(char *map_line, t_cunt *content)
 {
 	int		i;
 
@@ -54,14 +44,14 @@ int	ft_check_other(char *map_line, t_cnt *content)
 	{
 		if (content->count_e > 1 || content->count_p > 1)
 		{
-			ft_error("Error\nWrong number of player or exit\n");
+			ft_error("Wrong number of player or exit", 1);
 			return (0);
 		}
 		if (map_line[i] != content->wall && map_line[i] != content->player
 			&& map_line[i] != content->exit && map_line[i] != content->collect
 			&& map_line[i] != content->space)
 		{
-			ft_error("Error\nUnknown symbol(s) in map\n");
+			ft_error("Unknown symbol(s) in map", 1);
 			return (0);
 		}
 		i++;
@@ -110,7 +100,7 @@ int	ft_check_format(char **map)
 			x++;
 		if (x != count_x)
 		{
-			ft_error("Error\nMap must be a rectangle or a square\n");
+			ft_error("Map must be a rectangle or a square", 1);
 			return (0);
 		}
 		x = 0;

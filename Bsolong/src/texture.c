@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   texture.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: asimon <asimon@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/05 13:51:23 by asimon            #+#    #+#             */
-/*   Updated: 2022/01/08 23:50:21 by asimon           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../includes/so_long.h"
 
@@ -81,8 +71,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		ft_error("Error\nThis programe take 1 argument .ber\n");
-		return (0);
+		ft_error("This programe take 1 argument. A .ber file", 1);
 	}
 	else
 	{
