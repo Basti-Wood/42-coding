@@ -22,8 +22,7 @@ void	render_top(t_data *data)
 		{
 			if (chk_collect(data) == 0)
 			{
-				printf("Felicitation vous avez gagne en : %d coup !\n",
-					data->count);
+				printf("You won in %d moves! Are you proud of yourself? \n", data->count);
 				end(data);
 			}
 		}
@@ -50,7 +49,7 @@ void	render_right(t_data *data)
 		{
 			if (chk_collect(data) == 0)
 			{
-				printf("Felicitation vous avez gagne en : %d coup !\n",
+				printf("You won in %d moves! Arr you proud of yourself? \n",
 					data->count);
 				end(data);
 			}
@@ -78,7 +77,7 @@ void	render_left(t_data *data)
 		{
 			if (chk_collect(data) == 0)
 			{
-				printf("Felicitation vous avez gagne en : %d coup !\n",
+				printf("You won in %d moves! Arre you proud of yourself? \n",
 					data->count);
 				end(data);
 			}
@@ -106,7 +105,7 @@ void	render_down(t_data *data)
 		{
 			if (chk_collect(data) == 0)
 			{
-				printf("Felicitation vous avez gagne en : %d coup !\n",
+				printf("You won in %d moves! Arrbys you proud of yourself? \n",
 					data->count);
 				end(data);
 			}

@@ -21,7 +21,7 @@ int	ft_same_char(char *str)
 
 void	ft_error(char *str, int i)
 {
-	printf("Error\n%s\n", str);
+	printf("Error\n%s\n", str);//ft_PRINTF DO NOT FORGET AAAAAAAHHHHHHHHHHH
 	exit(i);
 }
 

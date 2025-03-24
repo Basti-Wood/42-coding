@@ -71,7 +71,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		ft_error("This programe take 1 argument. A .ber file", 1);
+		ft_error("You need to select a map in the folder map/", 1);
 	}
 	else
 	{
