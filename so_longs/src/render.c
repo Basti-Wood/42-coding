@@ -59,7 +59,9 @@ int	render(t_data *data)
 
 void	core_render(t_data *data)
 {
-	data->mlx_win = mlx_new_window(data->mlx_ptr, (data->width * data->img.width), (data->height * data->img.height), "So_long");
+	data->mlx_win = mlx_new_window(data->mlx_ptr,
+			(data->width * data->img.width),
+			(data->height * data->img.height), "So_long");
 	if (data->mlx_win == NULL)
 	{
 		free(data->mlx_ptr);
@@ -74,5 +76,6 @@ void	core_render(t_data *data)
 
 void	print_img(t_data *data, void *img, int x, int y)
 {
-	mlx_put_image_to_window(data->mlx_ptr, data->mlx_win, img, data->img.width * x, data->img.height * y);
+	mlx_put_image_to_window(data->mlx_ptr, data->mlx_win, img,
+		data->img.width * x, data->img.height * y);
 }
