@@ -1,6 +1,6 @@
 #include "../includes/so_long.h"
 
-int	chk_collect(t_data *data)
+int	collect_check(t_data *data)
 {
 	int		i;
 	int		y;
@@ -36,12 +36,12 @@ int	end(t_data *data)
 			i++;
 		}
 		free(data->map);
+		mlx_destroy_window(data->mlx_ptr, data->mlx_win);
 		mlx_destroy_image(data->mlx_ptr, data->img.img_wall);
 		mlx_destroy_image(data->mlx_ptr, data->img.img_floor);
 		mlx_destroy_image(data->mlx_ptr, data->img.img_collect);
 		mlx_destroy_image(data->mlx_ptr, data->img.img_player);
 		mlx_destroy_image(data->mlx_ptr, data->img.img_exit);
-		mlx_destroy_window(data->mlx_ptr, data->mlx_win);
 	}
 	mlx_destroy_display(data->mlx_ptr);
 	free(data->mlx_ptr);
@@ -52,14 +52,14 @@ int	key_press(int keysym, t_data *data)
 {
 	if (keysym == XK_Escape)
 		end(data);
-	if (keysym == XK_w)
-		render_top(data);
-	if (keysym == XK_d)
-		render_right(data);
-	if (keysym == XK_a)
-		render_left(data);
-	if (keysym == XK_s)
-		render_down(data);
+	if (keysym == XK_w || keysym == XK_Up)
+		move_up(data);
+	if (keysym == XK_d || keysym == XK_Right)
+		move_right(data);
+	if (keysym == XK_a || keysym == XK_Left)
+		move_left(data);
+	if (keysym == XK_s || keysym == XK_Down)
+		move_down(data);
 	return (0);
 }
 
@@ -75,7 +75,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		ft_error("You need to select a map in the folder map/", 1);
+		ft_error("You need to select a map of type .ber", 1);
 	}
 	else
 	{
@@ -91,5 +91,5 @@ int	main(int argc, char **argv)
 		else
 			end(&data);
 	}
-	return (1);
+	return (0);
 }

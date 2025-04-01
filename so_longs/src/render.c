@@ -2,49 +2,49 @@
 
 void	render_background(t_data *data)
 {
-	int	i;
+	int	x;
 	int	y;
 
-	i = 0;
+	x = 0;
 	y = 0;
 	while (data->map[y] != NULL)
 	{
-		while (data->map[y][i] != '\0')
+		while (data->map[y][x] != '\0')
 		{
-			if (data->map[y][i] == data->content.wall)
-				print_img(data, data->img.img_wall, i, y);
-			if (data->map[y][i] == data->content.space)
-				print_img(data, data->img.img_floor, i, y);
-			i++;
+			if (data->map[y][x] == data->content.wall)
+				print_img(data, data->img.img_wall, x, y);
+			if (data->map[y][x] == data->content.space)
+				print_img(data, data->img.img_floor, x, y);
+			x++;
 		}
-		i = 0;
+		x = 0;
 		y++;
 	}
 }
 
 void	render_other(t_data *data)
 {
-	int	i;
+	int	x;
 	int	y;
 
-	i = 0;
+	x = 0;
 	y = 0;
 	while (data->map[y])
 	{
-		i = 0;
-		while (data->map[y][i])
+		x = 0;
+		while (data->map[y][x])
 		{
-			if (data->map[y][i] == data->content.collect)
-				print_img(data, data->img.img_collect, i, y);
-			if (data->map[y][i] == data->content.exit)
-				print_img(data, data->img.img_exit, i, y);
-			if (data->map[y][i] == data->content.player)
+			if (data->map[y][x] == data->content.collect)
+				print_img(data, data->img.img_collect, x, y);
+			if (data->map[y][x] == data->content.exit)
+				print_img(data, data->img.img_exit, x, y);
+			if (data->map[y][x] == data->content.player)
 			{
-				data->pos.x = i * data->img.width;
+				data->pos.x = x * data->img.width;
 				data->pos.y = y * data->img.height;
-				print_img(data, data->img.img_player, i, y);
+				print_img(data, data->img.img_player, x, y);
 			}
-			i++;
+			x++;
 		}
 		y++;
 	}

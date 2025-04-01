@@ -1,6 +1,6 @@
 #include "../includes/so_long.h"
 
-void	render_top(t_data *data)
+void	move_up(t_data *data)
 {
 	int	pos_x;
 	int	pos_y;
@@ -18,7 +18,7 @@ void	render_top(t_data *data)
 		}
 		else
 		{
-			if (chk_collect(data) == 0)
+			if (collect_check(data) == 0)
 			{
 				printf("You won in %d moves!\n", data->count);
 				end(data);
@@ -27,7 +27,7 @@ void	render_top(t_data *data)
 	}
 }
 
-void	render_right(t_data *data)
+void	move_right(t_data *data)
 {
 	int	pos_x;
 	int	pos_y;
@@ -45,7 +45,7 @@ void	render_right(t_data *data)
 		}
 		else
 		{
-			if (chk_collect(data) == 0)
+			if (collect_check(data) == 0)
 			{
 				printf("You won in %d moves!\n", data->count);
 				end(data);
@@ -54,7 +54,7 @@ void	render_right(t_data *data)
 	}
 }
 
-void	render_left(t_data *data)
+void	move_left(t_data *data)
 {
 	int	pos_x;
 	int	pos_y;
@@ -72,7 +72,7 @@ void	render_left(t_data *data)
 		}
 		else
 		{
-			if (chk_collect(data) == 0)
+			if (collect_check(data) == 0)
 			{
 				printf("You won in %d moves!\n", data->count);
 				end(data);
@@ -81,7 +81,7 @@ void	render_left(t_data *data)
 	}
 }
 
-void	render_down(t_data *data)
+void	move_down(t_data *data)
 {
 	int	pos_x;
 	int	pos_y;
@@ -99,7 +99,7 @@ void	render_down(t_data *data)
 		}
 		else
 		{
-			if (chk_collect(data) == 0)
+			if (collect_check(data) == 0)
 			{
 				printf("You won in %d moves!\n", data->count);
 				end(data);

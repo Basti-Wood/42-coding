@@ -82,7 +82,7 @@ int			ft_check_line(char *map_line, char wall);
 int			ft_check_other(char *map_line, t_cunt *content);
 void		ft_check_content(t_data *data);
 int			ft_check_format(char **map);
-int			chk_collect(t_data *data);
+int			collect_check(t_data *data);
 
 void		set_img(t_data *data);
 void		set_content(t_cunt *content);
@@ -91,14 +91,13 @@ void		core_render(t_data *data);
 int			render(t_data *data);
 void		render_other(t_data *data);
 void		render_background(t_data *data);
-void		render_down(t_data *data);
-void		render_left(t_data *data);
-void		render_right(t_data *data);
-void		render_top(t_data *data);
+void		move_down(t_data *data);
+void		move_left(t_data *data);
+void		move_right(t_data *data);
+void		move_up(t_data *data);
 void		print_img(t_data *data, void *img, int x, int y);
 
 int			key_press(int keysym, t_data *data);
-int			chk_collect(t_data *data);
 int			end(t_data *data);
 
 #endif
