@@ -14,13 +14,13 @@ void	move_up(t_data *data)
 			data->map[pos_y][pos_x] = data->content.space;
 			data->map[pos_y - 1][pos_x] = data->content.player;
 			data->count += 1;
-			printf("count: %d\n", data->count);
+			printf("Moves: %d\n", data->count);
 		}
 		else
 		{
 			if (collect_check(data) == 0)
 			{
-				printf("You won in %d moves!\n", data->count);
+				printf("You won in %d Moves!\n", data->count);
 				end(data);
 			}
 		}
@@ -41,7 +41,7 @@ void	move_right(t_data *data)
 			data->map[pos_y][pos_x] = data->content.space;
 			data->map[pos_y][pos_x + 1] = data->content.player;
 			data->count += 1;
-			printf("count: %d\n", data->count);
+			printf("Moves: %d\n", data->count);
 		}
 		else
 		{
@@ -68,7 +68,7 @@ void	move_left(t_data *data)
 			data->map[pos_y][pos_x] = data->content.space;
 			data->map[pos_y][pos_x - 1] = data->content.player;
 			data->count += 1;
-			printf("count: %d\n", data->count);
+			printf("Moves: %d\n", data->count);
 		}
 		else
 		{
@@ -95,7 +95,7 @@ void	move_down(t_data *data)
 			data->map[pos_y][pos_x] = data->content.space;
 			data->map[pos_y + 1][pos_x] = data->content.player;
 			data->count += 1;
-			printf("count: %d\n", data->count);
+			printf("Moves: %d\n", data->count);
 		}
 		else
 		{

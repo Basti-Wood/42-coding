@@ -68,3 +68,16 @@ int	find_player_pos(char **map, int *x, int *y)
 	}
 	return (0);
 }
+
+void	floodfill_collect(char **map, int x, int y, char wall)
+{
+	if (y < 0 || x < 0 || !map[y] || x >= (int)ft_strlen(map[y]))
+		return ;
+	if (map[y][x] == wall || map[y][x] == 'X' || map[y][x] == 'E')
+		return ;
+	map[y][x] = 'X';
+	floodfill_collect(map, x + 1, y, wall);
+	floodfill_collect(map, x - 1, y, wall);
+	floodfill_collect(map, x, y + 1, wall);
+	floodfill_collect(map, x, y - 1, wall);
+}

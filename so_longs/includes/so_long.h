@@ -96,6 +96,7 @@ void		move_left(t_data *data);
 void		move_right(t_data *data);
 void		move_up(t_data *data);
 void		print_img(t_data *data, void *img, int x, int y);
+void		floodfill_collect(char **map, int x, int y, char wall);
 
 int			key_press(int keysym, t_data *data);
 int			end(t_data *data);

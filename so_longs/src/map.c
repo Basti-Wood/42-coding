@@ -1,39 +1,5 @@
 #include "../includes/so_long.h"
 
-char	*get_map(int fd)
-{
-	char	*full_map;
-	char	*current_line;
-	char	*temp;
-
-	full_map = NULL;
-	full_map = ft_strdup("");
-	if (full_map == NULL)
-	{
-		ft_error("Memory allocation failed", 1);
-		return (NULL);
-	}
-	while ((current_line = get_next_line(fd)) != NULL)
-	{
-		temp = full_map;
-		full_map = ft_strjoin(temp, current_line);
-		free(temp);
-		free(current_line);
-		if (full_map == NULL)
-		{
-			ft_error("Memory allocation failed", 1);
-			return (NULL);
-		}
-	}
-	if (ft_strlen(full_map) == 0)
-	{
-		free(full_map);
-		ft_error("Map is empty", 1);
-		return (NULL);
-	}
-	return (full_map);
-}
-
 void	*ft_free_map(t_data *data)
 {
 	int	i;
