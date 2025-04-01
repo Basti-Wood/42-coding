@@ -1,10 +1,7 @@
-# Simplified Makefile for so_long with colored Zelda output
-
 NAME        = so_long
 CC          = clang
 FLAG        = -Wall -Wextra -Werror
 
-# Library paths
 LIBFT_PATH  = ./ft_printf/
 LIBFT_FILE  = libftprintf.a
 MLX_PATH    = ./minilibx-linux/
@@ -12,13 +9,11 @@ MLX_FILE    = libmlx.a
 MLX_FLAG    = -lX11 -lXext
 GNL_PATH    = ./get_next_line/
 
-# Automatic file finding
 SRC_DIR     = ./src/
 INC_DIR     = ./includes/
 SRC         = $(wildcard $(SRC_DIR)*.c) $(wildcard $(GNL_PATH)*.c)
 OBJ         = $(SRC:.c=.o)
 
-# Basic ANSI Colors (widely supported)
 RED      = \033[0;31m
 GREEN    = \033[0;32m
 YELLOW   = \033[0;33m
@@ -28,20 +23,18 @@ GRAY	= \e[0;37m
 NC       = \033[0m 
 
 
-# Extended 256 Colors (for terminals that support it)
 BEIGE     = \033[38;5;223m
 WHITE     = \033[0;0m
 GRAY      = \033[38;5;245m
-BROWN     = \033[38;5;130m    # or 94 for darker brown
-DARK_RED  = \033[38;5;88m     # deeper red
-DARK_GREEN = \033[38;5;22m    # forest green
+BROWN     = \033[38;5;130m    
+DARK_RED  = \033[38;5;88m     
+DARK_GREEN = \033[38;5;22m  
 
-# Light Green options (choose one)
-LIGHT_GREEN = \033[38;5;120m   # Bright minty green
-LIGHT_GREEN2 = \033[38;5;156m  # Softer lime green
-LIGHT_GREEN3 = \033[38;5;46m   # Vivid light green (brighter)
+LIGHT_GREEN = \033[38;5;120m   
+LIGHT_GREEN2 = \033[38;5;156m  
+LIGHT_GREEN3 = \033[38;5;46m  
 
-# Rules
+
 all: $(NAME)
 
 lib:
@@ -59,9 +52,9 @@ $(NAME): lib mlx $(OBJ)
 	@$(CC) $(FLAG) $(OBJ) $(addprefix $(LIBFT_PATH), $(LIBFT_FILE)) \
 		$(addprefix $(MLX_PATH), $(MLX_FILE)) $(MLX_FLAG) -o $(NAME)
 	@echo "$(GREEN)./so_long created\n$(NC)"
-	@echo "$(DARK_RED)It's dangerous to go alone...$(NC)"| pv -qL 10
-	@echo "$(GREEN)	   Take this!$(NC)"| pv -qL 15
-	@sleep 0 
+	@echo "$(DARK_RED)It's dangerous to go alone...$(NC)"| pv -qL 40
+	@echo "$(GREEN)	   Take this!$(NC)"| pv -qL 60
+	@sleep 1 
 	@echo "${YELLOW}⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⡦⢄⣀⣀⣀⣀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
 	@echo "${YELLOW}⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⠽⠶⠒⠒⠒⠲⠶⠄⠉⠙⣦⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
 	@echo "${YELLOW}⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣶⠖⠺⠷⠤⢄⣀⡀⠠⢤⣢⣴⠞⠉⠉⠉⠉⠉⠙⠳⢦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"

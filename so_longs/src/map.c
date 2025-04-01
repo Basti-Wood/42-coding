@@ -2,30 +2,36 @@
 
 char	*get_map(int fd)
 {
-	char	*line_map;
-	char	*buff;
-	char	*tmp_buff;
+	char	*full_map;
+	char	*current_line;
+	char	*temp;
 
-	buff = ft_strdup("");
-	if (!buff)
+	full_map = NULL;
+	full_map = ft_strdup("");
+	if (full_map == NULL)
+	{
 		ft_error("Memory allocation failed", 1);
-	line_map = get_next_line(fd);
-	if (!line_map)
-	{
-		free(buff);
-		ft_error("Map is empty", 1);
+		return (NULL);
 	}
-	while (line_map)
+	while ((current_line = get_next_line(fd)) != NULL)
 	{
-		tmp_buff = buff;
-		buff = ft_strjoin(tmp_buff, line_map);
-		free(tmp_buff);
-		free(line_map);
-		if (!buff)
+		temp = full_map;
+		full_map = ft_strjoin(temp, current_line);
+		free(temp);
+		free(current_line);
+		if (full_map == NULL)
+		{
 			ft_error("Memory allocation failed", 1);
-		line_map = get_next_line(fd);
+			return (NULL);
+		}
 	}
-	return (buff);
+	if (ft_strlen(full_map) == 0)
+	{
+		free(full_map);
+		ft_error("Map is empty", 1);
+		return (NULL);
+	}
+	return (full_map);
 }
 
 void	*ft_free_map(t_data *data)

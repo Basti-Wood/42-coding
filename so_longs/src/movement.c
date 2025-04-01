@@ -107,3 +107,18 @@ void	move_down(t_data *data)
 		}
 	}
 }
+
+int	key_press(int keysym, t_data *data)
+{
+	if (keysym == XK_Escape)
+		end(data);
+	if (keysym == XK_w || keysym == XK_Up)
+		move_up(data);
+	if (keysym == XK_d || keysym == XK_Right)
+		move_right(data);
+	if (keysym == XK_a || keysym == XK_Left)
+		move_left(data);
+	if (keysym == XK_s || keysym == XK_Down)
+		move_down(data);
+	return (0);
+}

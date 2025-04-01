@@ -2,22 +2,21 @@
 
 int	collect_check(t_data *data)
 {
-	int		i;
+	int		x;
 	int		y;
 	int		count;
 
-	i = 0;
 	y = 0;
 	count = 0;
 	while (data->map[y])
 	{
-		while (data->map[y][i])
+		x = 0;
+		while (data->map[y][x])
 		{
-			if (data->map[y][i] == data->content.collect)
+			if (data->map[y][x] == data->content.collect)
 				count++;
-			i++;
+			x++;
 		}
-		i = 0;
 		y++;
 	}
 	return (count);
@@ -46,21 +45,6 @@ int	end(t_data *data)
 	mlx_destroy_display(data->mlx_ptr);
 	free(data->mlx_ptr);
 	exit(0);
-}
-
-int	key_press(int keysym, t_data *data)
-{
-	if (keysym == XK_Escape)
-		end(data);
-	if (keysym == XK_w || keysym == XK_Up)
-		move_up(data);
-	if (keysym == XK_d || keysym == XK_Right)
-		move_right(data);
-	if (keysym == XK_a || keysym == XK_Left)
-		move_left(data);
-	if (keysym == XK_s || keysym == XK_Down)
-		move_down(data);
-	return (0);
 }
 
 void	ft_error(char *str, int i)
