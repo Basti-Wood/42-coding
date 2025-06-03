@@ -10,5 +10,5 @@ int main(int ari, char **ars)
 	init_all(&engine, forks, philos, ars);
 	launcher(&engine, philos[0].philo_count);
 	destroy_all(&engine, NULL, philos[0].philo_count, 0);
-	return (1);
+	return (0);
 }

@@ -1,7 +1,7 @@
 #ifndef PHILO_H
-# define PHILO_H
+#define PHILO_H
 
-# define MAX_PHILO_COUNT 250
+#define MAX_PHILO_COUNT 255
 
 # include <pthread.h>
 # include <stdio.h>
@@ -60,7 +60,7 @@ void	launcher(t_engine *engine, int count);
 void	init_all(t_engine *engine, t_mutex *forks, t_philo *philos, char **ars);
 size_t ft_strlen(char *str);
 long ft_atoi(char *str);
-void error_message(char *str, int i);
+void ft_error(char *str, int i);
 size_t current_time();
 void	ft_usleep(size_t mls);
 void put_action(t_philo *philo, char *action);

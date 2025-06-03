@@ -7,7 +7,7 @@ void init_philosophers(t_engine *engine, t_philo *philos, t_mutex *forks, char *
 
 	philo_count = ft_atoi(ars[1]);
 	i = 0;
-	while (i < philo_count) // Correct loop condition
+	while (i < philo_count)
 	{
 		philos[i].id = i + 1;
 		philos[i].times.born_time = current_time();
@@ -19,7 +19,7 @@ void init_philosophers(t_engine *engine, t_philo *philos, t_mutex *forks, char *
 		if (ars[5])
 			philos[i].must_eat = ft_atoi(ars[5]);
 		else
-			philos[i].must_eat = -1; // Use -1 to indicate no limit
+			philos[i].must_eat = -1;
 		philos[i].philo_count = philo_count;
 		philos[i].mutexes.left_fork = &forks[i];
 		if (i == 0)
@@ -28,7 +28,7 @@ void init_philosophers(t_engine *engine, t_philo *philos, t_mutex *forks, char *
 			philos[i].mutexes.right_fork = &forks[i - 1];
 		philos[i].mutexes.write_lock = &engine->write_lock;
 		philos[i].mutexes.meal_lock = &engine->meal_lock;
-		i++; // Increment here
+		i++;
 	}
 }
 

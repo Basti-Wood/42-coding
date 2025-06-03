@@ -5,11 +5,11 @@ bool is_finished(t_philo *philo)
 	int i;
 	int finished;
 
-	if (philo[0].must_eat == -1) // No meal limit
+	if (philo[0].must_eat == -1)
 		return (false);
 	i = 0;
 	finished = 0;
-	while (i < philo[0].philo_count) // Correct loop condition
+	while (i < philo[0].philo_count)
 	{
 		pthread_mutex_lock(philo->mutexes.meal_lock);
 		if (philo[i].meals_eaten >= philo[i].must_eat)
@@ -42,7 +42,7 @@ void *observer(void *philo)
             if (current_time() - tmp[i].times.last_meal > tmp[i].times.die)
             {
                 pthread_mutex_unlock(tmp[i].mutexes.meal_lock);
-                put_action(&tmp[i], "died ☠️");
+                put_action(&tmp[i], "died");
                 pthread_mutex_lock(tmp->mutexes.write_lock);
                 return (NULL);
             }
@@ -55,7 +55,35 @@ void *observer(void *philo)
     return (NULL);
 }
 
-void routin(t_philo *philo)
+void routin(t_philo *philo) {
+    pthread_mutex_t *first_fork;
+    pthread_mutex_t *second_fork;
+
+	first_fork = philo->mutexes.left_fork;
+	second_fork = philo->mutexes.right_fork;
+    if (philo->mutexes.left_fork > philo->mutexes.right_fork)
+	{
+        first_fork = philo->mutexes.right_fork;
+        second_fork = philo->mutexes.left_fork;
+    }
+    pthread_mutex_lock(first_fork);
+    put_action(philo, "has taken a fork");
+    pthread_mutex_lock(second_fork);
+    put_action(philo, "has taken a fork");
+    pthread_mutex_lock(philo->mutexes.meal_lock);
+    put_action(philo, "is eating");
+    philo->times.last_meal = current_time();
+    philo->meals_eaten++;
+    pthread_mutex_unlock(philo->mutexes.meal_lock);
+    ft_usleep(philo->times.eat);
+	pthread_mutex_unlock(first_fork);
+    pthread_mutex_unlock(second_fork);
+    put_action(philo, "is sleeping");
+    ft_usleep(philo->times.sleep);
+    put_action(philo, "is thinking");
+}
+
+/*void routin(t_philo *philo)
 {
 	pthread_mutex_lock(philo->mutexes.right_fork);
 	put_action(philo, "Has Taken right Fork 🍴");
@@ -72,7 +100,7 @@ void routin(t_philo *philo)
 	put_action(philo, " is sleeping 😴");
 	ft_usleep(philo->times.sleep);
 	put_action(philo, " is thinking 🤔");	
-}
+}*/
 
 void	*start_simulation(void *ptr)
 {
@@ -97,17 +125,16 @@ void	launcher(t_engine *engine, int count)
 
 	i = 0;
 	if (pthread_create(&observer_id, NULL, &observer, engine->philos) != 0)
-		destroy_all(engine, "thread error", count, 1);
+		destroy_all(engine, "thread error\n", count, 1);
 	while (i < count)
 	{
 		if (pthread_create(&engine->philos[i].thread_id, NULL,
 				start_simulation, &engine->philos[i]) != 0)
-			destroy_all(engine, "thread error", count, 1);
+			destroy_all(engine, "thread error\n", count, 1);
 		i++;
 	}
 	if (pthread_join(observer_id, NULL) != 0)
 		destroy_all(engine, "thread error\n", count, 1);
-	// Let threads finish their current actions before detaching
 	i = 0;
 	while (i < count)
 	{
