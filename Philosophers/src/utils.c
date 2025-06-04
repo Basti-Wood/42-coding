@@ -15,7 +15,7 @@ size_t current_time()
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	ft_usleep(size_t mls)
+void	ft_usleep(size_t mls, t_philo *philo)
 {
 	size_t	start;
 	size_t	remaining;
@@ -23,6 +23,13 @@ void	ft_usleep(size_t mls)
 	start = current_time();
 	while (current_time() - start < mls)
 	{
+        pthread_mutex_lock(philo->mutexes.stop_lock);
+        if (*philo->stop_simulation) {
+            pthread_mutex_unlock(philo->mutexes.stop_lock);
+            break;
+        }
+        pthread_mutex_unlock(philo->mutexes.stop_lock);
+        
 		remaining = mls - (current_time() - start);
 		if (remaining > 10)
 			usleep(1000);
@@ -33,13 +40,34 @@ void	ft_usleep(size_t mls)
 
 void	put_action(t_philo *philo, char *action)
 {
-	size_t time;
+    // CAPTURE EVENT TIME FIRST
+    size_t event_time = current_time() - philo->times.born_time;
 
-	pthread_mutex_lock(philo->mutexes.write_lock);
-	time = current_time() - philo->times.born_time;
-	printf("%ld %d %s\n", time, philo->id, action);
-	pthread_mutex_unlock(philo->mutexes.write_lock);
+    // First stop_simulation check
+    pthread_mutex_lock(philo->mutexes.stop_lock);
+    if (*philo->stop_simulation) {
+        pthread_mutex_unlock(philo->mutexes.stop_lock);
+        return;
+    }
+    pthread_mutex_unlock(philo->mutexes.stop_lock);
+
+    pthread_mutex_lock(philo->mutexes.write_lock);
+    
+    // Re-check stop_simulation
+    pthread_mutex_lock(philo->mutexes.stop_lock);
+    if (*philo->stop_simulation) {
+        pthread_mutex_unlock(philo->mutexes.stop_lock);
+        pthread_mutex_unlock(philo->mutexes.write_lock);
+        return;
+    }
+    pthread_mutex_unlock(philo->mutexes.stop_lock);
+
+    // Use pre-captured event time
+    printf("%ld %d %s\n", event_time, philo->id, action);
+    
+    pthread_mutex_unlock(philo->mutexes.write_lock);
 }
+
 
 void	destroy_all(t_engine *engine, char *str, int count, int signal)
 {
