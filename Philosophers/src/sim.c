@@ -52,6 +52,7 @@ void *observer(void *arg)
     }
     return NULL;
 }
+
 void set_stop_flag(t_engine *engine)
 {
     pthread_mutex_lock(&engine->stop_lock);
