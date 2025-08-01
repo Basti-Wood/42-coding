@@ -9,17 +9,19 @@ void type_arg(t_token *token) {
         token->type = APPEND;
     else if (ft_strcmp(token->str, "<") == 0)
         token->type = INPUT;
+    else if (ft_strcmp(token->str, "<<") == 0)
+        token->type = HEREDOC;
     else if (ft_strcmp(token->str, "|") == 0)
         token->type = PIPE;
     else if (ft_strcmp(token->str, ";") == 0)
         token->type = END;
     else if (token->prev == NULL || token->prev->type == PIPE || token->prev->type == END)
-		token->type = CMD;
-	else
-		token->type = ARG;
+        token->type = CMD;
+    else
+        token->type = ARG;
 }
 
-t_token *create_token(char **elements)
+t_token *create_token(char **elements, t_shell *shell)
 {
     t_token *head = NULL;
     t_token *current = NULL;
@@ -42,10 +44,10 @@ t_token *create_token(char **elements)
             return NULL;
         }
 
-        new_token->str = ft_strdup(elements[i]);
+        new_token->str = expand_variables(elements[i], shell);
         new_token->next = NULL;
         new_token->prev = current;
-		type_arg(new_token);
+        type_arg(new_token);
 
         if (!head)
             head = new_token;
@@ -60,25 +62,20 @@ t_token *create_token(char **elements)
 }
 
 
-t_token *token_split(char *input)
+
+
+t_token *tokenize(t_shell *shell)
 {
-    char **elements = ft_split_quotes(input);
+    char **elements = ft_split_quotes(shell->input);
     if (!elements)
         return NULL;
 
-    t_token *tokens = create_token(elements);
+    t_token *tokens = create_token(elements, shell);
 
     int i = 0;
     while (elements[i])
         free(elements[i++]);
     free(elements);
-
-    return tokens;
-}
-
-t_token *tokenize(t_shell *shell)
-{
-    t_token *tokens = token_split(shell->input);
 
     return tokens;
 }
