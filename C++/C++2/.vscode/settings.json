@@ -18,7 +18,6 @@
 		"exception": "cpp",
 		"format": "cpp",
 		"initializer_list": "cpp",
-		"iomanip": "cpp",
 		"ios": "cpp",
 		"iosfwd": "cpp",
 		"iostream": "cpp",
@@ -50,7 +49,6 @@
 		"xstring": "cpp",
 		"xtr1common": "cpp",
 		"xutility": "cpp",
-		"sstream": "cpp",
-		"fstream": "cpp"
+		"iomanip": "cpp"
 	}
 }

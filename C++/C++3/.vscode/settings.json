@@ -1,5 +1,6 @@
 {
 	"files.associations": {
+		"iostream": "cpp",
 		"atomic": "cpp",
 		"bit": "cpp",
 		"cctype": "cpp",
@@ -21,7 +22,6 @@
 		"iomanip": "cpp",
 		"ios": "cpp",
 		"iosfwd": "cpp",
-		"iostream": "cpp",
 		"istream": "cpp",
 		"iterator": "cpp",
 		"limits": "cpp",
@@ -49,8 +49,6 @@
 		"xmemory": "cpp",
 		"xstring": "cpp",
 		"xtr1common": "cpp",
-		"xutility": "cpp",
-		"sstream": "cpp",
-		"fstream": "cpp"
+		"xutility": "cpp"
 	}
 }
