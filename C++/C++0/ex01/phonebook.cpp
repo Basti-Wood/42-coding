@@ -8,7 +8,6 @@ PhoneBook::PhoneBook(void) : _index(-1), _abort(false) {
 	return ;
 }
 
-/*	Destructor	*/
 PhoneBook::~PhoneBook(void) {
 	return ;
 }
@@ -139,7 +138,8 @@ bool		PhoneBook::searchContact()
 	_displayContactTable();
 
 	std::string input = _getInput("Index of the contact to display");
-	if (_abort) return false;
+	if (_abort)
+		return false;
 
 	return _displayContactByIndex(input);
 }

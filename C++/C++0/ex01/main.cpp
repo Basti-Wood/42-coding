@@ -18,7 +18,7 @@ int main() {
 			}
 		} else if (command == "SEARCH") {
 			if (!phonebook.searchContact()) {
-				std::cout << "Search aborted or no contacts available." << std::endl;
+				std::cout << "Search aborted." << std::endl;
 			}
 		} else if (command == "EXIT") {
 			std::cout << "Exiting phonebook." << std::endl;

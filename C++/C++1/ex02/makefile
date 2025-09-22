@@ -4,7 +4,7 @@ CXXFLAGS    := -Wall -Wextra -Werror -std=c++98
 # Files
 SRCS        := $(wildcard *.cpp)
 OBJS        := $(SRCS:.cpp=.o)
-NAME        := HI_THIS_IS_BRAIN
+NAME        := exec
 
 # Rules
 all: $(NAME)

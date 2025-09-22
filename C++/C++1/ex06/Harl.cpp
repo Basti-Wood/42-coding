@@ -36,12 +36,23 @@ void Harl::complain(const std::string &level)
 		&Harl::_warning,
 		&Harl::_error
 	};
-	for (size_t i = 0; i < 4; ++i) {
+	size_t i = 0;
+	while (i < 4) {
 		if (level == levels[i]) {
 			(this->*functions[i])();
-			return;
+			break;
+		}
+		++i;
+	}
+	if (i == 4) {
+		std::cout << "Probably complaining about insignificant problems" << std::endl;
+	}
+	else if (i < 4) {
+		i++;
+		while(i < 4) {
+			(this->*functions[i])();
+			++i;
 		}
 	}
-	std::cout << "Level too high. please report to a manager." << std::endl;
 
 }

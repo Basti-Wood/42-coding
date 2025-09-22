@@ -4,7 +4,7 @@ CXXFLAGS    := -Wall -Wextra -Werror -std=c++98
 # Files
 SRCS        := $(wildcard *.cpp)
 OBJS        := $(SRCS:.cpp=.o)
-NAME        := Phonebook
+NAME        := exec
 
 # Rules
 all: $(NAME)

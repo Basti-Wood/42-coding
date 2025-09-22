@@ -59,10 +59,10 @@ std::string Contact::getDarkestSecret() const{
 bool Contact::displayContactInfo() const{
 	if (this->isEmpty())
 		return (false);
-	std::cout	<< "+ First name\t: "	<< this->getFirstName()	<< std::endl
-				<< "+ Last name\t: "	<< this->getLastName()	<< std::endl
-				<< "+ Nickname\t: "		<< this->getNickname()	<< std::endl
-				<< "+ Phone number\t: "	<< this->getPhoneNumber() 	<< std::endl
-				<< "+ Darkest secret: "	<< this->getDarkestSecret()	<< std::endl;
+	std::cout	<< ">> First name\t: "	<< this->getFirstName()	<< std::endl
+				<< ">> Last name\t: "	<< this->getLastName()	<< std::endl
+				<< ">> Nickname\t: "		<< this->getNickname()	<< std::endl
+				<< ">> Phone number\t: "	<< this->getPhoneNumber() 	<< std::endl
+				<< ">> Darkest secret\t: "	<< this->getDarkestSecret()	<< std::endl;
 	return (true);
 }
