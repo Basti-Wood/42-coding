@@ -6,7 +6,7 @@
 class Cat : public Animal
 {
 	private:
-		Brain* brain; // Pointer to Brain object for Cat
+		Brain* brain;
 	public:
 		Cat();
 		Cat(const Cat &other);

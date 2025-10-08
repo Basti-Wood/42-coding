@@ -12,6 +12,7 @@ int main() {
 	ctB.takeDamage(5);
 	ctC.beRepaired(3);
 	ctD.attack("John");
+	std::cout<< CYAN "-------------------------ABOUT TO DEFEND---------------------------------" RESET << std::endl;
 	ctB.guardGate();
 	ctA.takeDamage(10);
 	ctA.beRepaired(5);

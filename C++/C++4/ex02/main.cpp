@@ -6,8 +6,8 @@
 int main()
 {
 	std::cout << CYAN << "=== Testing Abstract AAnimal ===" << RESET << std::endl;
-	//const AAnimal* animal = new AAnimal(); // ❌ Cannot instantiate abstract class!
-	//std::cout << "This line will never execute!" << std::endl;
+	//const AAnimal* animal = new AAnimal();
+	//std::cout << "This line will never execute!" << animal->makeSound(); << std::endl;
 	
 	std::cout << YELLOW << "\n--- Test 1: Polymorphism with Abstract Base ---" << RESET << std::endl;
 	
@@ -18,9 +18,8 @@ int main()
 	std::cout << "Dog type: " << dog->getType() << std::endl;
 	std::cout << "Cat type: " << cat->getType() << std::endl;
 	
-	dog->makeSound(); // Calls Dog::makeSound() -> "Woof!"
-	cat->makeSound(); // Calls Cat::makeSound() -> "Meow!"
-	//animal->makeSound(); // Calls AAnimal::makeSound() -> "Animal makes an appropriate sound"
+	dog->makeSound(); // Calls "Woof!"
+	cat->makeSound(); // Calls "Meow!"
 	
 	std::cout << YELLOW << "\n--- Test 2: Brain Functionality ---" << RESET << std::endl;
 	
@@ -47,11 +46,14 @@ int main()
 	// Array of abstract AAnimal pointers
 	const int size = 4;
 	AAnimal* animals[size];
-	
-	animals[0] = new Dog();
-	animals[1] = new Cat();
-	animals[2] = new Dog();
-	animals[3] = new Cat();
+
+	for (int i = 0; i < size; i++) {
+		if (i % 2 == 0) {
+			animals[i] = new Dog();
+		} else {
+			animals[i] = new Cat();
+		}
+	}
 	
 	std::cout << "All animals making their sounds:" << std::endl;
 	for (int i = 0; i < size; i++) {
@@ -84,11 +86,5 @@ int main()
 	for (int i = 0; i < size; i++) {
 		delete animals[i];
 	}
-	
-	std::cout << GREEN << "\n=== Abstract AAnimal Testing Complete ===" << RESET << std::endl;
-	std::cout << GREEN << "✅ AAnimal cannot be instantiated directly" << RESET << std::endl;
-	std::cout << GREEN << "✅ Polymorphism works perfectly" << RESET << std::endl;
-	std::cout << GREEN << "✅ All derived classes must implement makeSound()" << RESET << std::endl;
-	
 	return 0;
 }

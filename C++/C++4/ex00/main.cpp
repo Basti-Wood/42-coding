@@ -15,14 +15,13 @@ int main()
 	std::cout << i->getType() << " " << std::endl;
 	std::cout << l->getType() << " " << std::endl;
 	std::cout << meta->getType() << " " << std::endl;
-	i->makeSound(); //will output the cat sound!
+	i->makeSound(); //will output the no sound!
 	j->makeSound();
 	l->makeSound();
 	meta->makeSound();
 
 
 	delete meta;
-    
 	delete j;
 	delete l;
     delete i;

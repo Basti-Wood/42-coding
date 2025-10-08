@@ -16,19 +16,18 @@
 
 class AAnimal
 {
-protected:
-	std::string type;
-public:
-	AAnimal();
-	AAnimal(const std::string &type);
-	AAnimal(const AAnimal &other);
-	AAnimal &operator=(const AAnimal &other);
-	virtual ~AAnimal();
-	
-	// Pure virtual function - makes this class abstract
-	virtual void makeSound() const = 0;
-	
-	std::string getType() const;
+	protected:
+		std::string type;
+	public:
+		AAnimal();
+		AAnimal(const std::string &type);
+		AAnimal(const AAnimal &other);
+		AAnimal &operator=(const AAnimal &other);
+		virtual ~AAnimal();
+		
+		virtual void makeSound() const = 0; //= 0 means IT DOESNT EXIST WAKE UP THIS IS PURELY VIRTUAL!!!!
+		
+		std::string getType() const;
 };
 
 #endif //AANIMAL_HPP

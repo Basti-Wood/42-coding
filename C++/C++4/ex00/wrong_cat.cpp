@@ -20,5 +20,5 @@ wrong_cat &wrong_cat::operator=(const wrong_cat &other) {
 }
 //============Member Functions============//
 void wrong_cat::makeSound() const {
-	std::cout << MAGENTA << "Meow!" << RESET << std::endl;
+	std::cout << MAGENTA << "wrong Meow!" << RESET << std::endl;
 }

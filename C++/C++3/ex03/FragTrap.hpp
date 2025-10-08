@@ -6,7 +6,7 @@
 class FragTrap : virtual public ClapTrap
 {
 	private:
-		FragTrap(); // Default constructor is private to prevent its use
+		FragTrap();
 	public:
 		FragTrap(const std::string &name);
 		FragTrap(const FragTrap &other);

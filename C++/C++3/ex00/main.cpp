@@ -14,11 +14,15 @@ int main() {
 	ctA.takeDamage(10);
 	ctA.beRepaired(5);
 
-	for (int i = 0; i < 5; ++i) {
+	for (int i = 0; i < 20; ++i) {
+		ctA.attack("Doe");
+	}
+	for (int i = 0; i < 10; ++i) {
 		ctA.takeDamage(1);
 		ctB.takeDamage(1);
 		ctC.takeDamage(1);
 		ctD.takeDamage(1);
 	}
+
 	return 0;
 }
