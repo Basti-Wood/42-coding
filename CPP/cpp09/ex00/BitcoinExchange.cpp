@@ -62,13 +62,15 @@ static double parseAndValidateInput(std::string date, std::string valueStr)
 	int day = atoi(date.substr(8,2).c_str());
 	if (month < 1 || month > 12) throw BitcoinExchange::invalidDate();
 	int mdays = 31;
-	switch (month) {
-		case 4: case 6: case 9: case 11: mdays = 30; break;
-		case 2:
-			if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) mdays = 29;
-			else mdays = 28;
-			break;
-		default: mdays = 31;
+	if (month == 4 || month == 6 || month == 9 || month == 11) {
+		mdays = 30;
+	} else if (month == 2) {
+		if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
+			mdays = 29;
+		else
+			mdays = 28;
+	} else {
+		mdays = 31;
 	}
 	if (day < 1 || day > mdays) throw BitcoinExchange::invalidDate();
 
@@ -80,10 +82,15 @@ static double parseAndValidateInput(std::string date, std::string valueStr)
 		throw BitcoinExchange::invalidFormat();
 	}
 	if (errno == ERANGE || !std::isfinite(value)) {
-		throw BitcoinExchange::amountOutOfRange();
+		throw BitcoinExchange::tooLargeNumber();
 	}
-	if (value < 0 || value > 1000) {
-		throw BitcoinExchange::amountOutOfRange();
+	// Check for negative numbers first
+	if (value < 0) {
+		throw BitcoinExchange::notPositiveNumber();
+	}
+	// Then check for too large numbers
+	if (value > 1000) {
+		throw BitcoinExchange::tooLargeNumber();
 	}
 	return value;
 }
@@ -125,6 +132,16 @@ const char* BitcoinExchange::noDatabaseFile::what() const throw()
 const char* BitcoinExchange::amountOutOfRange::what() const throw() 
 {
 	return ("Error: Amount is out of range.");
+}
+
+const char* BitcoinExchange::notPositiveNumber::what() const throw() 
+{
+	return ("Error: not a positive number.");
+}
+
+const char* BitcoinExchange::tooLargeNumber::what() const throw() 
+{
+	return ("Error: too large of a number.");
 }
 
 const char* BitcoinExchange::invalidDate::what() const throw() 
@@ -197,16 +214,20 @@ void BitcoinExchange::printExchange(const std::string& filename) const
 	}
 
 	while (std::getline(file, line)) {
-		std::stringstream ss(line);
-		std::string date;
-		std::string valueStr;
-		
-		if (std::getline(ss, date, '|') && std::getline(ss, valueStr)) {
-			double value = parseAndValidateInput(date, valueStr);
-			double exchangedValue = getExchangeRateValue(date, value);
-			std::cout << date << " => " << value << " = " << exchangedValue << std::endl;
-		} else {
-			throw BitcoinExchange::invalidFormat();
+		try {
+			std::stringstream ss(line);
+			std::string date;
+			std::string valueStr;
+			
+			if (std::getline(ss, date, '|') && std::getline(ss, valueStr)) {
+				double value = parseAndValidateInput(date, valueStr);
+				double exchangedValue = getExchangeRateValue(date, value);
+				std::cout << date << " => " << value << " = " << exchangedValue << std::endl;
+			} else {
+				std::cerr << "Error: bad input => " << line << std::endl;
+			}
+		} catch (const std::exception& e) {
+			std::cerr << e.what() << std::endl;
 		}
 	}
 	file.close();

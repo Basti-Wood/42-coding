@@ -30,6 +30,14 @@ class BitcoinExchange {
 			const char *what() const throw();
 		};
 
+		class notPositiveNumber : public std::exception {
+			const char *what() const throw();
+		};
+
+		class tooLargeNumber : public std::exception {
+			const char *what() const throw();
+		};
+
 		class invalidDate : public std::exception {
 			const char *what() const throw();
 		};
