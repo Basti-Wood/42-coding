@@ -2,9 +2,9 @@ CXX         := c++
 CXXFLAGS    := -Wall -Wextra -Werror -std=c++98
 
 # Files
-SRCS        := main.cpp
+SRCS        := main.cpp RPN.cpp
 OBJS        := $(SRCS:.cpp=.o)
-NAME        := exec
+NAME        := RPN
 
 # Rules
 all: $(NAME)
