@@ -1,174 +1,177 @@
 #include "PmergeMe.hpp"
 
-//========================Constructor/ Destructor=======================//
+/* _________ canonical form _________ */
 
 PmergeMe::PmergeMe() {}
 
-PmergeMe::PmergeMe(int ac, char **av)
+PmergeMe::PmergeMe(const PmergeMe &other) : _vec(other._vec), _deq(other._deq) {}
+
+PmergeMe &PmergeMe::operator=(const PmergeMe &other)
 {
-	for (int i = 1; i < ac; ++i)
+	if (this != &other)
 	{
-		std::string arg = av[i];
-		std::stringstream ss(arg);
-		int num;
-		
-		if (!(ss >> num) || !ss.eof() || num < 0)
-			throw std::invalid_argument("Error: invalid input");
-		
-		_vectorData.push_back(num);
-		_dequeData.push_back(num);
-	}
-}
-
-PmergeMe::PmergeMe(const PmergeMe& other) : _vectorData(other._vectorData), _dequeData(other._dequeData)
-{}
-
-PmergeMe& PmergeMe::operator=(const PmergeMe& other) {
-	if (this != &other) {
-		_vectorData = other._vectorData;
-		_dequeData = other._dequeData;
+		_vec = other._vec;
+		_deq = other._deq;
 	}
 	return *this;
 }
 
 PmergeMe::~PmergeMe() {}
 
-//========================Helper Functions=======================//
-template<typename T>
-bool PmergeMe::isSorted(const T& container) const
+/* _________ input parsing _________ */
+
+void PmergeMe::parseInput(int argc, char **argv)
 {
-	for(size_t i = 1; i < container.size(); ++i)
+	std::set<int> seen;
+
+	for (int i = 1; i < argc; i++)
 	{
-		if (container[i - 1] > container[i])
-			return false;
+		std::string arg(argv[i]);
+		if (arg.empty())
+			throw std::runtime_error("empty argument");
+
+		for (std::size_t j = 0; j < arg.size(); j++)
+		{
+			if (!std::isdigit(arg[j]))
+				throw std::runtime_error("not a positive integer");
+		}
+
+		long num = std::atol(argv[i]);
+		if (num <= 0 || num > INT_MAX)
+			throw std::runtime_error("number out of range");
+
+		int n = static_cast<int>(num);
+		if (seen.count(n))
+			throw std::runtime_error("duplicate number");
+		seen.insert(n);
+
+		_vec.push_back(n);
+		_deq.push_back(n);
 	}
-	return true;
 }
 
 
-template<typename T>
-void PmergeMe::mergeInsertSort(T& container)
-{
-	if(container.size() <= 1 || isSorted(container))
-		return;
 
-	std::vector<std::pair<int, int> > pairs;
-	bool hasStraggler = (container.size() % 2 != 0);
-	
-	if (hasStraggler)
+/* _________ public entry point _________ */
+
+void PmergeMe::run(int argc, char **argv)
+{
+	parseInput(argc, argv);
+
+	std::vector<int> vecCopy(_vec);
+	std::deque<int>  deqCopy(_deq);
+
+	printContainer("Before: ", _vec);
+
+	clock_t t0 = clock();
+	fordJohnsonSort(vecCopy);
+	clock_t t1 = clock();
+	double usVec = static_cast<double>(t1 - t0) / CLOCKS_PER_SEC * 1000000.0;
+
+	clock_t t2 = clock();
+	fordJohnsonSort(deqCopy);
+	clock_t t3 = clock();
+	double usDeq = static_cast<double>(t3 - t2) / CLOCKS_PER_SEC * 1000000.0;
+
+	printContainer("After:  ", vecCopy);
+
+	bool vecSorted = std::is_sorted(vecCopy.begin(), vecCopy.end());
+	bool deqSorted = std::is_sorted(deqCopy.begin(), deqCopy.end());
+	std::cout << "Sorted:  " << (vecSorted && deqSorted ? "OK" : "KO") << std::endl;
+
+	std::cout << "Time to process a range of " << _vec.size()
+			  << " elements with std::vector : " << usVec << " us" << std::endl;
+	std::cout << "Time to process a range of " << _deq.size()
+			  << " elements with std::deque  : " << usDeq << " us" << std::endl;
+}
+
+/* _________ sorter implementations _________ */
+
+template <typename Container>
+static std::vector<Container> split_container(const Container &c)
+{
+	std::vector<Container> result;
+	for (typename Container::const_iterator it = c.begin(); it != c.end(); ++it)
 	{
-		int straggler = container.back();
+		Container single;
+		single.push_back(*it);
+		result.push_back(single);
 	}
-	
-	size_t pairCount = container.size() / 2;
-	for (size_t i = 0; i < pairCount; ++i)
+	return result;
+}
+
+template <typename Container>
+static Container merge_pair(const Container &a, const Container &b)
+{
+	Container ret;
+	typename Container::const_iterator ita = a.begin();
+	typename Container::const_iterator itb = b.begin();
+	while (ita != a.end() && itb != b.end())
 	{
-		int a = container[2 * i];
-		int b = container[2 * i + 1];
-		if (a > b)
-			pairs.push_back(std::make_pair(a, b));
+		if (*ita <= *itb)
+			ret.push_back(*ita++);
 		else
-			pairs.push_back(std::make_pair(b, a));
+			ret.push_back(*itb++);
 	}
-
-	if (pairs.size() > 1)
-	{
-		T largerElements;
-		for (size_t i = 0; i < pairs.size(); ++i)
-			largerElements.push_back(pairs[i].first);
-		
-		mergeInsertSort(largerElements);
-
-		std::vector<std::pair<int, int> > sortedPairs;
-		for (size_t i = 0; i < largerElements.size(); ++i)
-		{
-			for (size_t j = 0; j < pairs.size(); ++j)
-			{
-				if (pairs[j].first == largerElements[i])
-				{
-					sortedPairs.push_back(pairs[j]);
-					pairs.erase(pairs.begin() + j);
-					break;
-				}
-			}
-		}
-		pairs = sortedPairs;
-	}
-
-	T sorted;
-	if (!pairs.empty())
-	{
-		sorted.push_back(pairs[0].second);
-		for (size_t i = 0; i < pairs.size(); ++i)
-			sorted.push_back(pairs[i].first);
-	}
-
-	for (size_t i = 1; i < pairs.size(); ++i)
-	{
-		int value = pairs[i].second;
-		size_t left = 0;
-		size_t right = sorted.size();
-		while (left < right)
-		{
-			size_t mid = left + (right - left) / 2;
-			if (sorted[mid] < value)
-				left = mid + 1;
-			else
-				right = mid;
-		}
-		sorted.insert(sorted.begin() + left, value);
-	}
-	
-
-	if (hasStraggler)
-	{
-		size_t left = 0;
-		size_t right = sorted.size();
-		while (left < right)
-		{
-			size_t mid = left + (right - left) / 2;
-			if (sorted[mid] < straggler)
-				left = mid + 1;
-			else
-				right = mid;
-		}
-		sorted.insert(sorted.begin() + left, straggler);
-	}
-
-	container = sorted;
-}
-//========================Member functions=======================//
-
-void PmergeMe::sortVector() 
-{
-	mergeInsertSort(_vectorData);
+	while (ita != a.end())
+		ret.push_back(*ita++);
+	while (itb != b.end())
+		ret.push_back(*itb++);
+	return ret;
 }
 
-void PmergeMe::sortDeque()
+template <typename Container>
+void PmergeMe::fordJohnsonSort(Container &c)
 {
-	mergeInsertSort(_dequeData);
+	std::stack<Container> conA;
+	std::stack<Container> conB;
+	Container popA;
+	Container popB;
+	Container pushcon;
+	bool PushConA = false;
+
+	std::vector<Container> singles = split_container(c);
+	for (std::size_t i = 0; i < singles.size(); ++i)
+		conA.push(singles[i]);
+
+	while(conA.size() > 1 || conB.size() > 1)
+	{
+		while(PushConA && conB.size() > 1)
+		{
+			popA = conB.top(); conB.pop();
+			popB = conB.top(); conB.pop();
+			pushcon = merge_pair(popA, popB);
+			conA.push(pushcon);
+			if (conB.size() <= 1)
+				PushConA = false;
+		}
+		while(!PushConA && conA.size() > 1)
+		{
+			popA = conA.top(); conA.pop();
+			popB = conA.top(); conA.pop();
+			pushcon = merge_pair(popA, popB);
+			conB.push(pushcon);
+			if (conA.size() <= 1)
+				PushConA = true;
+		}
+	}
+	if (conA.size() == 1 && conB.empty())
+		c = conA.top();
+	else if (conB.size() == 1 && conA.empty())
+		c = conB.top();
+	else if (conA.size() == 1 && conB.size() == 1)
+		c = merge_pair(conA.top(), conB.top());
 }
 
-void PmergeMe::printContainer(ContainerType type) const
+template <typename Container>
+void PmergeMe::printContainer(const std::string &prefix, const Container &c)
 {
-	if (type == VECTOR)
+	std::cout << prefix;
+	for (typename Container::const_iterator it = c.begin(); it != c.end(); ++it)
 	{
-		for (size_t i = 0; i < _vectorData.size(); ++i)
-		{
-			std::cout << _vectorData[i];
-			if (i != _vectorData.size() - 1)
-				std::cout << " ";
-		}
-		std::cout << std::endl;
+		if (it != c.begin())
+			std::cout << " ";
+		std::cout << *it;
 	}
-	else if (type == DEQUE)
-	{
-		for (size_t i = 0; i < _dequeData.size(); ++i)
-		{
-			std::cout << _dequeData[i];
-			if (i != _dequeData.size() - 1)
-				std::cout << " ";
-		}
-		std::cout << std::endl;
-	}
+	std::cout << std::endl;
 }

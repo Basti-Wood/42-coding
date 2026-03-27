@@ -48,7 +48,6 @@ static double parseAndValidateInput(std::string date, std::string valueStr)
 	trim(date);
 	trim(valueStr);
 
-	// Validate date format YYYY-MM-DD and ranges
 	if (date.size() != 10 || date[4] != '-' || date[7] != '-') {
 		throw BitcoinExchange::invalidDate();
 	}
@@ -74,7 +73,6 @@ static double parseAndValidateInput(std::string date, std::string valueStr)
 	}
 	if (day < 1 || day > mdays) throw BitcoinExchange::invalidDate();
 
-	// Parse value robustly and check range
 	char *endptr = NULL;
 	errno = 0;
 	double value = strtod(valueStr.c_str(), &endptr);
@@ -84,11 +82,11 @@ static double parseAndValidateInput(std::string date, std::string valueStr)
 	if (errno == ERANGE || !std::isfinite(value)) {
 		throw BitcoinExchange::tooLargeNumber();
 	}
-	// Check for negative numbers first
+
 	if (value < 0) {
 		throw BitcoinExchange::notPositiveNumber();
 	}
-	// Then check for too large numbers
+
 	if (value > 1000) {
 		throw BitcoinExchange::tooLargeNumber();
 	}
