@@ -75,8 +75,12 @@ void PmergeMe::run(int argc, char **argv)
 
 	printContainer("After:  ", vecCopy);
 
-	bool vecSorted = std::is_sorted(vecCopy.begin(), vecCopy.end());
-	bool deqSorted = std::is_sorted(deqCopy.begin(), deqCopy.end());
+	bool vecSorted = true;
+	for (std::size_t i = 1; i < vecCopy.size(); i++)
+		if (vecCopy[i - 1] > vecCopy[i]) { vecSorted = false; break; }
+	bool deqSorted = true;
+	for (std::size_t i = 1; i < deqCopy.size(); i++)
+		if (deqCopy[i - 1] > deqCopy[i]) { deqSorted = false; break; }
 	std::cout << "Sorted:  " << (vecSorted && deqSorted ? "OK" : "KO") << std::endl;
 
 	std::cout << "Time to process a range of " << _vec.size()
@@ -87,91 +91,185 @@ void PmergeMe::run(int argc, char **argv)
 
 /* _________ sorter implementations _________ */
 
-template <typename Container>
-static std::vector<Container> split_container(const Container &c)
-{
-	std::vector<Container> result;
-	for (typename Container::const_iterator it = c.begin(); it != c.end(); ++it)
-	{
-		Container single;
-		single.push_back(*it);
-		result.push_back(single);
+struct PairBySecond {
+	bool operator()(const std::pair<int, int> &a, const std::pair<int, int> &b) const {
+		return a.second < b.second;
 	}
-	return result;
+};
+
+std::vector<std::pair<int, int> > PmergeMe::makeSortedPairs(std::vector<int> &c, std::size_t n)
+{
+	for (std::size_t i = 0; i < n; i += 2)
+		if (c[i] > c[i + 1])
+			std::swap(c[i], c[i + 1]);
+	std::vector<std::pair<int, int> > pairs;
+	for (std::size_t i = 0; i < n; i += 2)
+		pairs.push_back(std::make_pair(c[i], c[i + 1]));
+	return pairs;
 }
 
-template <typename Container>
-static Container merge_pair(const Container &a, const Container &b)
+std::vector<std::pair<int, int> > PmergeMe::makeSortedPairs(std::deque<int> &c, std::size_t n)
 {
-	Container ret;
-	typename Container::const_iterator ita = a.begin();
-	typename Container::const_iterator itb = b.begin();
-	while (ita != a.end() && itb != b.end())
-	{
-		if (*ita <= *itb)
-			ret.push_back(*ita++);
-		else
-			ret.push_back(*itb++);
-	}
-	while (ita != a.end())
-		ret.push_back(*ita++);
-	while (itb != b.end())
-		ret.push_back(*itb++);
-	return ret;
+	for (std::size_t i = 0; i < n; i += 2)
+		if (c[i] > c[i + 1])
+			std::swap(c[i], c[i + 1]);
+	std::vector<std::pair<int, int> > pairs;
+	for (std::size_t i = 0; i < n; i += 2)
+		pairs.push_back(std::make_pair(c[i], c[i + 1]));
+	return pairs;
 }
 
-template <typename Container>
-void PmergeMe::fordJohnsonSort(Container &c)
+std::vector<std::size_t> PmergeMe::jacobsthalSeq(std::size_t pendSize)
 {
-	std::stack<Container> conA;
-	std::stack<Container> conB;
-	Container popA;
-	Container popB;
-	Container pushcon;
-	bool PushConA = false;
-
-	std::vector<Container> singles = split_container(c);
-	for (std::size_t i = 0; i < singles.size(); ++i)
-		conA.push(singles[i]);
-
-	while(conA.size() > 1 || conB.size() > 1)
+	std::vector<std::size_t> jac;
+	jac.push_back(1);
+	jac.push_back(3);
+	while (jac.back() < pendSize)
 	{
-		while(PushConA && conB.size() > 1)
-		{
-			popA = conB.top(); conB.pop();
-			popB = conB.top(); conB.pop();
-			pushcon = merge_pair(popA, popB);
-			conA.push(pushcon);
-			if (conB.size() <= 1)
-				PushConA = false;
-		}
-		while(!PushConA && conA.size() > 1)
-		{
-			popA = conA.top(); conA.pop();
-			popB = conA.top(); conA.pop();
-			pushcon = merge_pair(popA, popB);
-			conB.push(pushcon);
-			if (conA.size() <= 1)
-				PushConA = true;
-		}
+		std::size_t j = jac.size();
+		jac.push_back(jac[j - 1] + 2 * jac[j - 2]);
 	}
-	if (conA.size() == 1 && conB.empty())
-		c = conA.top();
-	else if (conB.size() == 1 && conA.empty())
-		c = conB.top();
-	else if (conA.size() == 1 && conB.size() == 1)
-		c = merge_pair(conA.top(), conB.top());
+	return jac;
 }
 
-template <typename Container>
-void PmergeMe::printContainer(const std::string &prefix, const Container &c)
+void PmergeMe::insertPend(std::vector<int> &chain, const std::vector<std::pair<int, int> > &pairs)
+{
+	std::size_t pendSize = pairs.size() - 1;
+	if (pendSize == 0)
+		return;
+	std::vector<std::size_t> jac = jacobsthalSeq(pendSize);
+	std::size_t prevGroupEnd = 0;
+	for (std::size_t gi = 0; gi < jac.size() && prevGroupEnd < pendSize; ++gi)
+	{
+		std::size_t groupEnd = std::min(jac[gi], pendSize);
+		for (std::size_t idx = groupEnd; idx > prevGroupEnd; --idx)
+			chain.insert(
+				std::lower_bound(chain.begin(),
+					std::lower_bound(chain.begin(), chain.end(), pairs[idx].second),
+					pairs[idx].first),
+				pairs[idx].first);
+		prevGroupEnd = groupEnd;
+	}
+}
+
+void PmergeMe::insertPend(std::deque<int> &chain, const std::vector<std::pair<int, int> > &pairs)
+{
+	std::size_t pendSize = pairs.size() - 1;
+	if (pendSize == 0)
+		return;
+	std::vector<std::size_t> jac = jacobsthalSeq(pendSize);
+	std::size_t prevGroupEnd = 0;
+	for (std::size_t gi = 0; gi < jac.size() && prevGroupEnd < pendSize; ++gi)
+	{
+		std::size_t groupEnd = std::min(jac[gi], pendSize);
+		for (std::size_t idx = groupEnd; idx > prevGroupEnd; --idx)
+			chain.insert(
+				std::lower_bound(chain.begin(),
+					std::lower_bound(chain.begin(), chain.end(), pairs[idx].second),
+					pairs[idx].first),
+				pairs[idx].first);
+		prevGroupEnd = groupEnd;
+	}
+}
+
+void PmergeMe::fordJohnsonSort(std::vector<int> &c)
+{
+	std::size_t n = c.size();
+	if (n <= 1)
+		return;
+
+	bool hasStraggler = (n % 2 != 0);
+	int straggler = 0;
+	if (hasStraggler) { straggler = c[n - 1]; c.pop_back(); --n; }
+
+	std::vector<std::pair<int, int> > pairs = makeSortedPairs(c, n);
+
+	std::vector<int> largers;
+	for (std::size_t i = 0; i < pairs.size(); ++i)
+		largers.push_back(pairs[i].second);
+	fordJohnsonSort(largers);
+
+	std::sort(pairs.begin(), pairs.end(), PairBySecond());
+
+	std::vector<int> chain;
+	chain.push_back(pairs[0].first);
+	for (std::size_t i = 0; i < pairs.size(); ++i)
+		chain.push_back(pairs[i].second);
+
+	insertPend(chain, pairs);
+
+	if (hasStraggler)
+		chain.insert(std::lower_bound(chain.begin(), chain.end(), straggler), straggler);
+
+	c = chain;
+}
+
+void PmergeMe::fordJohnsonSort(std::deque<int> &c)
+{
+	std::size_t n = c.size();
+	if (n <= 1)
+		return;
+
+	bool hasStraggler = (n % 2 != 0);
+	int straggler = 0;
+	if (hasStraggler) { straggler = c[n - 1]; c.pop_back(); --n; }
+
+	std::vector<std::pair<int, int> > pairs = makeSortedPairs(c, n);
+
+	std::deque<int> largers;
+	for (std::size_t i = 0; i < pairs.size(); ++i)
+		largers.push_back(pairs[i].second);
+	fordJohnsonSort(largers);
+
+	std::sort(pairs.begin(), pairs.end(), PairBySecond());
+
+	std::deque<int> chain;
+	chain.push_back(pairs[0].first);
+	for (std::size_t i = 0; i < pairs.size(); ++i)
+		chain.push_back(pairs[i].second);
+
+	insertPend(chain, pairs);
+
+	if (hasStraggler)
+		chain.insert(std::lower_bound(chain.begin(), chain.end(), straggler), straggler);
+
+	c = chain;
+}
+
+void PmergeMe::printContainer(const std::string &prefix, const std::vector<int> &c)
 {
 	std::cout << prefix;
-	for (typename Container::const_iterator it = c.begin(); it != c.end(); ++it)
+	for (std::size_t i = 0; i < c.size(); ++i)
 	{
-		if (it != c.begin())
-			std::cout << " ";
-		std::cout << *it;
+		if (i != 0) std::cout << " ";
+		std::cout << c[i];
+	}
+	std::cout << std::endl;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void PmergeMe::printContainer(const std::string &prefix, const std::deque<int> &c)
+{
+	std::cout << prefix;
+	for (std::size_t i = 0; i < c.size(); ++i)
+	{
+		if (i != 0) std::cout << " ";
+		std::cout << c[i];
 	}
 	std::cout << std::endl;
 }
