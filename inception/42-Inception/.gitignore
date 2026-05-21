@@ -1,4 +1,4 @@
 secrets/credentials.txt
-srcs/.env
+src/.env
 secrets/db_password.txt
 secrets/db_root_password.txt
