@@ -1,0 +1,17 @@
+# domain
+DOMAIN_NAME=your.domain.com
+
+#MARIADB
+
+MYSQL_DATABASE=wordpress
+MYSQL_USER=wpdbuser
+
+# Wordpress
+WP_TITLE=YoutTitle
+WP_ADMIN_USER=AdminUserName
+WP_ADMIN_EMAIL=AdminUser@Email.com
+WP_USER=NormalUser
+WP_USER_EMAIL=NormalUser@Email.com
+
+#paths
+DATA_PATH=/home/user/pathforyourdata
