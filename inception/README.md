@@ -82,6 +82,82 @@ inception/
             └── tools/
                 └── setup_wp.sh
 ```
+# instructions
+
+## Requirements
+
+Run these commands once to install the necessary tools:
+
+```bash
+# Update system
+sudo apt update && sudo apt upgrade -y
+
+# Install Docker and tools
+sudo apt install -y docker.io docker-compose make openssl git
+
+# Add your user to the docker group (avoids needing sudo for docker commands)
+sudo usermod -aG docker $USER
+
+# Apply group changes (or log out and back in)
+newgrp docker
+
+# Verify installation
+docker --version
+docker-compose --version
+```
+
+---
+
+## Credentials
+
+The `secrets/` folder contains three files with login credentials.
+**Do not share or commit these files.**
+
+| File                  | Contains                                      |
+|-----------------------|-----------------------------------------------|
+| `credentials.txt`     | WordPress admin username and password         |
+| `db_password.txt`     | MariaDB user password                         |
+| `db_root_password.txt`| MariaDB root password                         |
+
+---
+
+## How to Run
+
+**1. Clone the repository into your home folder**
+
+```bash
+git clone https://github.com/Basti-Wood/42Inception.git ~/Inception
+```
+
+**2. Register your domain in `/etc/hosts`**
+
+This makes your browser resolve the domain locally instead of going to the internet.
+
+```bash
+sudo bash -c 'echo "127.0.0.1 YOUR.DOMAIN.COM" >> /etc/hosts'
+```
+
+Replace `YOUR.DOMAIN.COM` with your actual domain (e.g. `sholz.42.fr`).
+
+**3. Build and start the project**
+
+Navigate into the project folder and run:
+
+```bash
+make
+```
+
+The first build takes a few minutes. Once done, all three containers (`nginx`, `wordpress`, `mariadb`) should be running.
+
+**4. Confirm everything is up**
+
+```bash
+docker ps
+```
+
+You should see all three containers with status `Up`.
+
+
 
 # recources
 
